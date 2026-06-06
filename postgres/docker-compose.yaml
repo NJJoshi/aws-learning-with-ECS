@@ -1,0 +1,19 @@
+services:
+  postgres:
+    image: postgres:18
+    container_name: postgres
+    environment:
+      - POSTGRES_USER=admin
+      - POSTGRES_PASSWORD=admin
+      - TZ=Asia/Kolkata
+      - PGTZ=Asia/Kolkata
+    command: >
+      bash -c "ln -sf /usr/share/zoneinfo/Asia/Kolkata /usr/share/zoneinfo/Asia/Calcutta
+      && docker-entrypoint.sh postgres
+      -c timezone=Asia/Kolkata
+      -c log_timezone=Asia/Kolkata"      
+    volumes:
+      - ./db:/var/lib/postgresql/18/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    ports:
+      - 5434:5432
